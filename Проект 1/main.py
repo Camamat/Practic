@@ -16,10 +16,14 @@ def main():
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
+    # Checking for fluctuations
+    dd.notify_if_strong_fluctuations(stock_data, 20)
+
+    # Calculate the average value of the 'Close' column
     dd.calculate_and_display_average_price(stock_data)
 
     # Plot the data
-    # dplt.create_and_save_plot(stock_data, ticker, period)
+    dplt.create_and_save_plot(stock_data, ticker, period)
 
 
 if __name__ == "__main__":
