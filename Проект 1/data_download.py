@@ -1,4 +1,5 @@
 import yfinance as yf
+import pandas
 
 
 def fetch_stock_data(ticker, period="1mo"):
@@ -35,3 +36,14 @@ def notify_if_strong_fluctuations(data, threshold):
     percent = difference / (calculate_and_display_average_price(data) / 100)
     if percent >= threshold:
         print("Цена акций колебалась более чем на заданный процент!")
+
+def  export_data_to_csv(data, filename):
+    """
+    Экспортирует данные в CSV файл.
+
+    data: База данных которую экспортируем.
+    filename: Имя файла для сохранения.
+    """
+
+    data.to_csv(filename)
+    print(f"CSV file created {filename}")
