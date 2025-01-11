@@ -2,3 +2,6 @@
 ![alt text](screenshot/image2.png)
 ![alt text](screenshot/image3.png)
 ![alt text](screenshot/image4.png)
+![alt text](screenshot/image5.png)
+![alt text](screenshot/imageMACD.png)
+![alt text](screenshot/imageRSI.png)

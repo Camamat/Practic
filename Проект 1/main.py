@@ -24,11 +24,16 @@ def main():
     # Calculate the average value of the 'Close' column
     dd.calculate_and_display_average_price(stock_data)
 
-    # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period)
-
     # Export data to CSV
     dd.export_data_to_csv(stock_data, csv_filename)
+
+    # Добавление RSI, MACD
+    stock_data = dd.calculate_rsi(stock_data)  # Добавляем расчет RSI
+    stock_data = dd.calculate_macd(stock_data)  # Добавляем расчет MACD
+    print(stock_data)
+
+    # Plot the data
+    dplt.create_and_save_plot(stock_data, ticker, period)
 
 
 if __name__ == "__main__":

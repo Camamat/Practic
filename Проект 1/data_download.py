@@ -1,5 +1,4 @@
 import yfinance as yf
-import pandas
 
 
 def fetch_stock_data(ticker, period="1mo"):
@@ -47,3 +46,33 @@ def  export_data_to_csv(data, filename):
 
     data.to_csv(filename)
     print(f"CSV file created {filename}")
+
+def calculate_rsi(data, window=14):
+    """
+    Рассчитывает индекс относительной силы (RSI) для данных о ценах акций.
+
+    data: DataFrame с историческими данными о ценах акций
+    window: Период расчета RSI
+    """
+    delta = data['Close'].diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=window).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=window).mean()
+    rsi = gain / loss
+    data['RSI'] = 100 - (100 / (1 + rsi))
+    return data
+
+
+def calculate_macd(data, short_window=12, long_window=26, signal_window=9):
+    """
+    Рассчитывает Moving Average Convergence Divergence (MACD) для данных о ценах акций.
+
+    data: DataFrame с историческими данными о ценах акций
+    short_window: Период для короткой экспоненциальной скользящей средней (EMA)
+    long_window: Период для длинной экспоненциальной скользящей средней (EMA)
+    signal_window: Период для сигнальной линии MACD
+    """
+    data['EMA_short'] = data['Close'].ewm(span=short_window, adjust=False).mean()
+    data['EMA_long'] = data['Close'].ewm(span=long_window, adjust=False).mean()
+    data['MACD'] = data['EMA_short'] - data['EMA_long']
+    data['Signal'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
+    return data
