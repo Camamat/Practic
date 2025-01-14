@@ -1,10 +1,25 @@
 import yfinance as yf
 
 
-def fetch_stock_data(ticker, period="1mo"):
+def fetch_stock_data(ticker, period, start, end):
+    """
+    Получает данные об акциях для указанного периода.
+    
+    ticker: Символ акции, для которой нужно получить данные.
+    period: Период данных.
+    start: Начальная дата периода данных.
+    end: Конечная дата периода данных.
+
+    """
+    
     stock = yf.Ticker(ticker)
-    data = stock.history(period=period)
+    if start is not None:
+        data = stock.history(start=start, end=end)
+    else:
+        data = stock.history(period=period)
+    print(data)
     return data
+    
 
 
 def add_moving_average(data, window_size=5):

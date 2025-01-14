@@ -11,9 +11,13 @@ def main():
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
     threshold = float(input("Введите порог колебаний в процентах (например, 10 для 10%): "))
     csv_filename = input("Введите имя файла для экспорта данных в CSV (например, 'data.csv'): ")
-
+    
+    # Данные для указания периода
+    start = input("Введите дату начала анализа(yyyy-mm-dd):")
+    end = input("Введите дату окончания анализа данных(yyyy-mm-dd):")
+    
     # Fetch stock data
-    stock_data = dd.fetch_stock_data(ticker, period)
+    stock_data = dd.fetch_stock_data(ticker, period, start, end)
 
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
