@@ -16,6 +16,9 @@ def main():
     start = input("Введите дату начала анализа(yyyy-mm-dd):")
     end = input("Введите дату окончания анализа данных(yyyy-mm-dd):")
     
+    # Выбор стиля
+    style = input("Введите стиль оформления графика (например, 'ggplot', 'default'): ")
+
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period, start, end)
 
@@ -37,7 +40,7 @@ def main():
     print(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period)
+    dplt.create_and_save_plot(stock_data, ticker, period, style = style)
 
 
 if __name__ == "__main__":

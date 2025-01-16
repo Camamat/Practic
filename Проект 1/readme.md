@@ -6,3 +6,5 @@
 ![alt text](screenshot/imageMACD.png)
 ![alt text](screenshot/imageRSI.png)
 ![alt text](screenshot/image6.png)
+![alt text](screenshot/image7.png)
+![alt text](screenshot/image8.png)
