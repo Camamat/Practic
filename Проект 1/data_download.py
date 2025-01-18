@@ -91,3 +91,14 @@ def calculate_macd(data, short_window=12, long_window=26, signal_window=9):
     data['MACD'] = data['EMA_short'] - data['EMA_long']
     data['Signal'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
     return data
+
+def calculate_standard_deviation(data):
+    """
+    Принимает DataFrame с данными о цене закрытия акций и вычисляет стандартное отклонение.
+    data: Данные о цене закрытия акций.
+    """
+    
+    std_deviation = data['Close'].std(ddof=1)
+    print(f'Стандартное отклонение цены закрытия: {std_deviation}')
+    return std_deviation
+    

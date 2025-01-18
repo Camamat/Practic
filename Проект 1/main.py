@@ -3,19 +3,29 @@ import data_plotting as dplt
 
 
 def main():
-    print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
-    print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
-    print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
+    print(
+        "Добро пожаловать в инструмент получения и построения графиков биржевых данных."
+    )
+    print(
+        "Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc)."
+    )
+    print(
+        "Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс."
+    )
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
-    threshold = float(input("Введите порог колебаний в процентах (например, 10 для 10%): "))
-    csv_filename = input("Введите имя файла для экспорта данных в CSV (например, 'data.csv'): ")
-    
+    threshold = float(
+        input("Введите порог колебаний в процентах (например, 10 для 10%): ")
+    )
+    csv_filename = input(
+        "Введите имя файла для экспорта данных в CSV (например, 'data.csv'): "
+    )
+
     # Данные для указания периода
     start = input("Введите дату начала анализа(yyyy-mm-dd):")
     end = input("Введите дату окончания анализа данных(yyyy-mm-dd):")
-    
+
     # Выбор стиля
     style = input("Введите стиль оформления графика (например, 'ggplot', 'default'): ")
 
@@ -31,6 +41,10 @@ def main():
     # Calculate the average value of the 'Close' column
     dd.calculate_and_display_average_price(stock_data)
 
+    # Вызов функции для расчета стандартного отклонения
+    std_deviation = dd.calculate_standard_deviation(stock_data)
+    print("Рассчитано стандартное отклонение.")
+
     # Export data to CSV
     dd.export_data_to_csv(stock_data, csv_filename)
 
@@ -40,7 +54,10 @@ def main():
     print(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period, style = style)
+    dplt.create_and_save_plot(stock_data, ticker, period, style=style)
+
+    #  Стандартное отклонение цены закрытия
+    dd.calculate_standard_deviation(stock_data)
 
 
 if __name__ == "__main__":
