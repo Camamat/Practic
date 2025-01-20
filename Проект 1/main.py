@@ -53,11 +53,14 @@ def main():
     stock_data = dd.calculate_macd(stock_data)  # Добавляем расчет MACD
     print(stock_data)
 
-    # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period, style=style)
-
     #  Стандартное отклонение цены закрытия
     dd.calculate_standard_deviation(stock_data)
+
+    #  Интерактивный график
+    dd.interactive_chart(stock_data, ticker)
+
+    # Plot the data
+    dplt.create_and_save_plot(stock_data, ticker, period, style=style)
 
 
 if __name__ == "__main__":

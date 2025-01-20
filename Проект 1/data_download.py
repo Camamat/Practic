@@ -1,5 +1,5 @@
 import yfinance as yf
-
+import plotly.graph_objs as go
 
 def fetch_stock_data(ticker, period, start, end):
     """
@@ -101,4 +101,18 @@ def calculate_standard_deviation(data):
     std_deviation = data['Close'].std(ddof=1)
     print(f'Стандартное отклонение цены закрытия: {std_deviation}')
     return std_deviation
-    
+
+def interactive_chart(stock_data, ticker):
+    """Принимает DataFrame и вычисляет среднее значение колонки 'Close'. Результат  выводится в консоль."""
+    # Создание графика с использованием Plotly
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name='Цена закрытия'))
+
+    fig.update_layout(title=f'Исторические цены акции {ticker}',
+                      xaxis_title='Дата',
+                      yaxis_title='Цена закрытия ($)')
+
+    fig.show()
+    average_close = stock_data['Close'].mean()
+    print(f'Среднее значение колонки "Close": {average_close}')
