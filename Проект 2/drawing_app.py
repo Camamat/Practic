@@ -18,42 +18,50 @@ class DrawingApp:
 
         self.last_x, self.last_y = None, None
         self.pen_color = 'black'
+        self.last_pen_color = self.pen_color  # Последний использованный цвет кисти
+        self.background_color_mode = False  # Режим цвета фона
 
         self.canvas.bind('<B1-Motion>', self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
 
 
     def setup_ui(self):
-        control_frame = tk.Frame(self.root)
-        control_frame.pack(fill=tk.X)
+        """
+        Настройка пользовательского интерфейса, создание кнопок и выпадающего меню.
+        """
+        self.control_frame = tk.Frame(self.root)
+        self.control_frame.pack(fill=tk.X)
 
-        clear_button = tk.Button(control_frame, text="Очистить", command=self.clear_canvas)
-        clear_button.pack(side=tk.LEFT)
+        self.clear_button = tk.Button(self.control_frame, text="Очистить", command=self.clear_canvas)
+        self.clear_button.pack(side=tk.LEFT)
 
-        color_button = tk.Button(control_frame, text="Выбрать цвет", command=self.choose_color)
-        color_button.pack(side=tk.LEFT)
+        self.color_button = tk.Button(self.control_frame, text="Выбрать цвет", command=self.choose_color)
+        self.color_button.pack(side=tk.LEFT)
 
-        save_button = tk.Button(control_frame, text="Сохранить", command=self.save_image)
-        save_button.pack(side=tk.LEFT)
+        self.save_button = tk.Button(self.control_frame, text="Сохранить", command=self.save_image)
+        self.save_button.pack(side=tk.LEFT)
 
-        self.brush_size_scale = tk.Scale(control_frame, from_=1, to=10, orient=tk.HORIZONTAL)
-        self.brush_size_scale.pack(side=tk.LEFT)
+        # Переключаемая кнопка для установки цвета кисти в цвет фона
+        self.background_color_button = tk.Button(self.control_frame, text="Ластик",
+                                                 command=self.eraser)
+        self.background_color_button.pack(side=tk.LEFT)
 
-        # Переменная для хранения выбранной толщины кисти
-        self.brush_size_var = tk.StringVar(value="1")
-        
-        # Выпадающее меню для выбора толщины кисти
-        brush_sizes = ["1", "2", "5", "10"]
-        self.brush_size_menu = tk.OptionMenu(control_frame, self.brush_size_var, *brush_sizes)
+        # Список толщин кисти как целые числа
+        self.brush_size_var = tk.IntVar(value=1)  # Устанавливаем значение по умолчанию
+
+        # Создаем выпадающее меню для выбора толщины кисти
+        brush_sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.brush_size_menu = tk.OptionMenu(self.control_frame, self.brush_size_var, *brush_sizes)
         self.brush_size_menu.pack(side=tk.LEFT)
 
     def paint(self, event):
         if self.last_x and self.last_y:
+            brush_size = self.brush_size_var.get()
             self.canvas.create_line(self.last_x, self.last_y, event.x, event.y,
-                                    width=self.brush_size_scale.get(), fill=self.pen_color,
+                                    width=brush_size, fill=self.pen_color,
                                     capstyle=tk.ROUND, smooth=tk.TRUE)
             self.draw.line([self.last_x, self.last_y, event.x, event.y], fill=self.pen_color,
-                           width=self.brush_size_scale.get())
+                           width=brush_size)
 
         self.last_x = event.x
         self.last_y = event.y
@@ -68,6 +76,21 @@ class DrawingApp:
 
     def choose_color(self):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
+
+    def eraser(self):
+        """
+        Переключает режим ластика. При активации цвет кисти равен цвету фона,
+        при деактивации возвращается последний использованный цвет кисти.
+        """
+        if self.background_color_mode:
+            self.pen_color = self.last_pen_color  # Возвращаем последний цвет кисти
+            self.background_color_button.config(relief=tk.RAISED)  # Изменяем стиль кнопки
+        else:
+            self.last_pen_color = self.pen_color  # Сохраняем текущий цвет кисти
+            self.pen_color = self.canvas['bg']  # Устанавливаем цвет кисти в цвет фона
+            self.background_color_button.config(relief=tk.SUNKEN)  # Изменяем стиль кнопки
+
+        self.background_color_mode = not self.background_color_mode
 
     def save_image(self):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
